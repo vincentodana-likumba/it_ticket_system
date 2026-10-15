@@ -53,3 +53,7 @@ next-env.d.ts
 .claude/
 .windsurf/
 skills-lock.json
+
+# Cloudflare tunnel binary
+cloudflared.exe
+*.exe
