@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Ticket {
+  id              String    @id @default(uuid())
+  title           String
+  description     String
+  status          String    @default("Open") // Open, In Progress, Resolved, Closed
+  priority        String    @default("Low") // Low, Medium, High, Critical
+  category        String    @default("Other") // Hardware Request, Software Issue, Network & Connectivity, Access & Permissions, SAP / ERP, Other
+  department      String    @default("General IT")
+  contactEmail    String    @default("user@maxim.com")
+  requester       String    @default("Anonymous")
+  assignedTo      String?
+  impact          String    @default("Individual") // Individual, Department, Company-Wide
+  resolutionNotes String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  comments        Comment[]
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  ticketId   String
+  ticket     Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author     String
+  authorRole String   @default("User") // User, IT Support
+  content    String
+  isInternal Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
